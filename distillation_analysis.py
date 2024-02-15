@@ -11,6 +11,7 @@ import utils
 import model.net as net
 import model.resnet as resnet
 import model.data_loader as data_loader
+#TODO torchnet
 from torchnet.meter import ConfusionMeter
 from tqdm import tqdm
 
@@ -38,6 +39,7 @@ def model_analysis(model, dataloader, params, temperature=1., num_classes=10):
             if params.cuda:
                 data_batch, labels_batch = data_batch.cuda(async=True), \
                                            labels_batch.cuda(async=True)
+            # TODO remove Variable
             data_batch, labels_batch = Variable(data_batch), Variable(labels_batch)
 
             output_batch = model(data_batch)
