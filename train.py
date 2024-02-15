@@ -357,7 +357,7 @@ if __name__ == '__main__':
        nn.DataParallel module to correctly load the model parameters
     """
     if "distill" in params.model_version:
-
+        # This could be a good place to add code to load the resnet8 model
         # train a 5-layer CNN or a 18-layer ResNet with knowledge distillation
         if params.model_version == "cnn_distill":
             model = net.Net(params).cuda() if params.cuda else net.Net(params)
