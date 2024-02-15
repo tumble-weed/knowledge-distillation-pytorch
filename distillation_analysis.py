@@ -100,7 +100,8 @@ if __name__ == '__main__':
     metrics = resnet.metrics
     
     logging.info("Starting analysis...")
-
+    # TODO how will you load the resnet8 model used in the experiments?
+    # TODO or will you use the models given here
     # Reload weights from the saved file
     utils.load_checkpoint(os.path.join(args.model_dir, args.restore_file + '.pth.tar'), model)
 
