@@ -54,6 +54,7 @@ def launch_training_job(parent_dir, job_name, params):
     cmd = "{python} train.py --model_dir={model_dir}".format(python=PYTHON,
                                                              model_dir=model_dir)
     print(cmd)
+   #TODO subprocess check_call
     check_call(cmd, shell=True)
 
 
