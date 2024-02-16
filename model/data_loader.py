@@ -12,10 +12,16 @@ import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data.sampler import SubsetRandomSampler
 
-def fetch_dataloader(types, params):
+def fetch_dataloader(types, params,dataset=None):
     """
     Fetch and return train/dev dataloader with hyperparameters (params.subset_percent = 1.)
     """
+    if dataset is None:
+        dataset =  vars(params).get('dataset','cifar-10')
+    if dataset == 'cifar-10':
+        cifar_class = torchvision.datasets.CIFAR10
+    elif dataset == 'cifar-100':
+        cifar_class = torchvision.datasets.CIFAR100
 
     # using random crops and horizontal flip for train set
     if params.augmentation == "yes":
@@ -36,13 +42,14 @@ def fetch_dataloader(types, params):
         transforms.ToTensor(),
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.247, 0.243, 0.261))])
     #cifar_class = torchvision.datasets.CIFAR100
-    cifar_class = torchvision.datasets.CIFAR10
-    trainset = cifar_class(root='./data-cifar10', train=True,
+    
+
+    trainset = cifar_class(root='./data', train=True,
         download=True, transform=train_transformer)
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=params.batch_size,
         shuffle=True, num_workers=params.num_workers, pin_memory=params.cuda)
 
-    devset = cifar_class(root='./data-cifar10', train=False,
+    devset = cifar_class(root='./data', train=False,
         download=True, transform=dev_transformer)
     devloader = torch.utils.data.DataLoader(devset, batch_size=params.batch_size,
         shuffle=False, num_workers=params.num_workers, pin_memory=params.cuda)
@@ -55,10 +62,17 @@ def fetch_dataloader(types, params):
     return dl
 
 
-def fetch_subset_dataloader(types, params):
+def fetch_subset_dataloader(types, params,dataset=None):
     """
     Use only a subset of dataset for KD training, depending on params.subset_percent
     """
+    if dataset is None:
+        dataset =  vars(params).get('dataset','cifar-10')
+    if dataset == 'cifar-10':
+        cifar_class = torchvision.datasets.CIFAR10
+    elif dataset == 'cifar-100':
+        cifar_class = torchvision.datasets.CIFAR100
+
 
     # using random crops and horizontal flip for train set
     if params.augmentation == "yes":
@@ -79,10 +93,10 @@ def fetch_subset_dataloader(types, params):
         transforms.ToTensor(),
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.247, 0.243, 0.261))])
 
-    trainset = torchvision.datasets.CIFAR10(root='./data-cifar10', train=True,
+    trainset = cifar_class(root='./data', train=True,
         download=True, transform=train_transformer)
 
-    devset = torchvision.datasets.CIFAR10(root='./data-cifar10', train=False,
+    devset = cifar_class(root='./data', train=False,
         download=True, transform=dev_transformer)
 
     trainset_size = len(trainset)
