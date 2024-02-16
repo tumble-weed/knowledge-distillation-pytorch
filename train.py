@@ -34,7 +34,8 @@ parser.add_argument('--restore_file', default=None,
                     containing weights to reload before training")  # 'best' or 'train'
 
 
-def train(model, optimizer, loss_fn, dataloader, metrics, params):
+def train(model, optimizer, loss_fn, dataloader, metrics, params,
+                       dataset = 'cifar-10'):
     """Train the model on `num_steps` batches
 
     Args:
@@ -100,7 +101,8 @@ def train(model, optimizer, loss_fn, dataloader, metrics, params):
 
 
 def train_and_evaluate(model, train_dataloader, val_dataloader, optimizer,
-                       loss_fn, metrics, params, model_dir, restore_file=None):
+                       loss_fn, metrics, params, model_dir, restore_file=None,
+                       dataset = 'cifar-10'):
     """Train the model and evaluate every epoch.
 
     Args:
@@ -162,7 +164,8 @@ def train_and_evaluate(model, train_dataloader, val_dataloader, optimizer,
 
 
 # Defining train_kd & train_and_evaluate_kd functions
-def train_kd(model, teacher_model, optimizer, loss_fn_kd, dataloader, metrics, params):
+def train_kd(model, teacher_model, optimizer, loss_fn_kd, dataloader, metrics, params,
+                       dataset = 'cifar-10'):
     """Train the model on `num_steps` batches
 
     Args:
@@ -239,7 +242,8 @@ def train_kd(model, teacher_model, optimizer, loss_fn_kd, dataloader, metrics, p
 
 
 def train_and_evaluate_kd(model, teacher_model, train_dataloader, val_dataloader, optimizer,
-                       loss_fn_kd, metrics, params, model_dir, restore_file=None):
+                       loss_fn_kd, metrics, params, model_dir, restore_file=None,
+                       dataset = 'cifar-10'):
     """Train the model and evaluate every epoch.
 
     Args:
@@ -344,11 +348,11 @@ if __name__ == '__main__':
 
     # fetch dataloaders, considering full-set vs. sub-set scenarios
     if params.subset_percent < 1.0:
-        train_dl = data_loader.fetch_subset_dataloader('train', params)
+        train_dl = data_loader.fetch_subset_dataloader('train', params,dataset=dataset)
     else:
-        train_dl = data_loader.fetch_dataloader('train', params)
+        train_dl = data_loader.fetch_dataloader('train', params,dataset=dataset)
     
-    dev_dl = data_loader.fetch_dataloader('dev', params)
+    dev_dl = data_loader.fetch_dataloader('dev', params,dataset=dataset)
 
     logging.info("- done.")
 
